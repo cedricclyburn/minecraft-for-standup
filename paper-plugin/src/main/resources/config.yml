@@ -1,0 +1,10 @@
+backend:
+  # Example Route URL exposed by OpenShift backend service.
+  base-url: "https://minecraft-backend-minecraft.apps.example.com"
+  # Inject manually from a local secret source. Do not commit real values.
+  api-key: "change-me"
+  connect-timeout-ms: 3000
+  request-timeout-ms: 5000
+
+command:
+  cooldown-seconds: 3

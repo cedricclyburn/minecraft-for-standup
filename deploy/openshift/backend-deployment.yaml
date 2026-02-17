@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft-backend
+  namespace: minecraft
+  labels:
+    app: minecraft-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft-backend
+  template:
+    metadata:
+      labels:
+        app: minecraft-backend
+    spec:
+      containers:
+      - name: backend
+        image: image-registry.openshift-image-registry.svc:5000/minecraft/minecraft-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        envFrom:
+        - configMapRef:
+            name: minecraft-backend-config
+        - secretRef:
+            name: minecraft-backend-secrets
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 20
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi

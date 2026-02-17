@@ -1,0 +1,26 @@
+name: MinecraftJira
+version: 0.1.0
+main: com.example.minecraftjira.MinecraftJiraPlugin
+api-version: '1.20'
+authors: [platform-team]
+commands:
+  jira:
+    description: GitHub project + standup commands
+    usage: /jira <help|status|update|standup>
+    permission: minecraftjira.use
+permissions:
+  minecraftjira.use:
+    description: Base permission for /jira command
+    default: true
+  minecraftjira.help:
+    description: Use /jira help
+    default: true
+  minecraftjira.status:
+    description: Use /jira status
+    default: true
+  minecraftjira.update:
+    description: Use /jira update
+    default: op
+  minecraftjira.standup:
+    description: Use /jira standup
+    default: true
