@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft-mcp-server
+  namespace: minecraft
+  labels:
+    app: minecraft-mcp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft-mcp-server
+  template:
+    metadata:
+      labels:
+        app: minecraft-mcp-server
+    spec:
+      containers:
+      - name: mcp-server
+        image: python:3.11-slim
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            pip install mcp httpx && python /app/server.py
+        env:
+        - name: MINECRAFT_BACKEND_URL
+          value: "http://minecraft-backend:8080"
+        - name: MINECRAFT_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: minecraft-api-key
+              key: API_KEY
+              optional: true
+        ports:
+        - containerPort: 8080
+          name: mcp
+        volumeMounts:
+        - name: server-code
+          mountPath: /app
+      volumes:
+      - name: server-code
+        configMap:
+          name: mcp-server-code
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minecraft-mcp-server
+  namespace: minecraft
+spec:
+  selector:
+    app: minecraft-mcp-server
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    name: mcp

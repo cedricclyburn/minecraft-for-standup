@@ -1,3 +1,6 @@
 [submodule "plugin"]
 	path = plugin
 	url = https://github.com/soyr-redhat/minecraft-devtools-plugin.git
+[submodule "Minecraft_slash_plugin"]
+	path = Minecraft_slash_plugin
+	url = https://github.com/soyr-redhat/minecraft-devtools-plugin.git
